@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width"> 
+        <title>Challenge One Encriptador</title>
+        <link rel="stylesheet" href="reset.css">
+        <link rel="stylesheet" href="style.css">
+  
+    </head>
+
+    <body>
+  
+      <script>
+        function realizarAccion() {
+          const texto = document.getElementById("texto").value;
+          const accion = document.querySelector('input[name="accion"]:checked').value;
+
+          if (texto === "") {
+            limpiarError("resultadoTexto");
+            mostrarError("Por favor ingrese un texto", "resultadoTexto");
+            return;
+          }
+
+          limpiarError("resultadoTexto");
+
+          let resultado = "";
+
+          if (accion === "encriptar") {
+            resultado = encriptarTexto(texto);
+          } else if (accion === "desencriptar") {
+            resultado = desencriptarTexto(texto);
+          }
+
+          document.getElementById("resultadoTexto").value = resultado;
+        }
+
+        function encriptarTexto(texto) {
+          let resultado = "";
+          for (let i = 0; i < texto.length; i++) {
+            const letra = texto.charAt(i);
+            switch (letra) {
+              case "e":
+                resultado += "enter";
+                break;
+              case "i":
+                resultado += "imes";
+                break;
+              case "a":
+                resultado += "ai";
+                break;
+              case "o":
+                resultado += "ober";
+                break;
+              case "u":
+                resultado += "ufat";
+                break;
+              default:
+                resultado += letra;
+            }
+          }
+          return resultado;
+        }
+
+        function desencriptarTexto(texto) {
+          let resultado = "";
+          let i = 0;
+          while (i < texto.length) {
+            if (texto.substr(i, 5) === "enter") {
+              resultado += "e";
+              i += 5;
+            } else if (texto.substr(i, 4) === "imes") {
+              resultado += "i";
+              i += 4;
+            } else if (texto.substr(i, 2) === "ai") {
+              resultado += "a";
+              i += 2;
+            } else if (texto.substr(i, 4) === "ober") {
+              resultado += "o";
+              i += 4;
+            } else if (texto.substr(i, 4) === "ufat") {
+              resultado += "u";
+              i += 4;
+            } else {
+              resultado += texto.charAt(i);
+              i++;
+            }
+          }
+          return resultado;
+        }
+
+        function copiarTexto() {
+          const resultado = document.getElementById("resultadoTexto").value;
+          if (resultado !== "") {
+            
+            navigator.clipboard.writeText(resultado);
+            alert("El texto ha sido copiado");
+          }
+          else {
+            alert("no hay texto para copiar");
+          }
+         
+        }
+
+        function mostrarError(mensaje, elemento) {
+          const error = document.createElement("p");
+          error.textContent = mensaje;
+          error.style.color = "red";
+          error.style.fontWeight = "bold";
+          const resultado = document.getElementById(elemento);
+          resultado.value = "";
+          resultado.insertAdjacentElement("beforebegin", error);
+        }
+
+        function limpiarError(elemento) {
+          const resultado = document.getElementById(elemento);
+          resultado.value = "";
+          const error = resultado.previousElementSibling;
+          if (error && error.tagName === "P") {
+            error.remove();
+          }
+        }
+      </script>
+      
+          <h1>Encriptador de Mensajes</h1>
+          <form id="formulario">
+            <textarea id="texto" rows="5" cols="50" placeholder="Ingrese el texto"></textarea><br>
+            <div id="opciones">
+              <input type="radio" id="encriptar" name="accion" value="encriptar" checked>
+              <label for="encriptar">Encriptar</label>
+              <input type="radio" id="desencriptar" name="accion" value="desencriptar">
+              <label for="desencriptar">Desencriptar</label>
+            </div>
+
+            <button id="accion" type="button" onclick="realizarAccion()">Realizar Acción</button>
+          </form>
+
+          <textarea id="resultadoTexto" rows="5" cols="50" placeholder="Resultado" readonly></textarea>
+
+          <button id="copiarTexto" onclick="copiarTexto()">Copiar Texto</button>
+          
+     <footer>
+        <p class="copyright"> &#169; Sebastian Camargo Curso Alura 2023</p>  
+    </footer>     
+    </body>
+</html>
